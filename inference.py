@@ -1,0 +1,48 @@
+import os
+
+import warnings
+warnings.filterwarnings("ignore")
+
+import SimpleITK
+import torch
+
+from mmseg.apis import inference_model, init_model
+import dinov2_adapter
+
+
+def read(path):
+    image = SimpleITK.ReadImage(path)
+    return SimpleITK.GetArrayFromImage(image)
+
+
+def write(path, array):
+    image = SimpleITK.GetImageFromArray(array)
+    SimpleITK.WriteImage(image, path, useCompression=False)
+
+
+def main():
+    input_root = '/input/images/adenocarcinoma_image'
+    output_root = '/output/images/adenocarcinoma-mask'
+
+    if not os.path.exists(output_root):
+        os.makedirs(output_root)
+
+    config = 'config.py'
+    checkpoint = '/opt/ml/model/best_val_mcScore_iter_68000_ce_loss_fold1.pth'
+    model = init_model(config, checkpoint, device='cuda:0')
+
+    with torch.no_grad():
+        for filename in os.listdir(input_root):
+            if filename.endswith('.mha'):
+                output_path = f'{output_root}/{filename}'
+                try:
+                    input_path = input_root + '/' + filename
+                    image = read(input_path)
+                    result = inference_model(model, image).pred_sem_seg.cpu().data
+                    write(output_path, result.squeeze().numpy().astype('uint8'))
+                except Exception as error:
+                    print(error)
+
+
+if __name__ == '__main__':
+    main()
