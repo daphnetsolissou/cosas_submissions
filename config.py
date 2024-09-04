@@ -40,7 +40,7 @@ model = dict(
         num_classes=2,  # Number of classes in the dataset
         norm_cfg=norm_cfg,
         align_corners=False,
-        threshold=0.62,
+        threshold=0.53,
         out_channels=1,
         loss_decode=dict(type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)
 
@@ -57,7 +57,7 @@ model = dict(
         norm_cfg=norm_cfg,
         align_corners=False,
         out_channels=1,
-        threshold=0.62,
+        threshold=0.53,
         loss_decode=dict(type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.4)
     )
 )
