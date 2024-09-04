@@ -28,7 +28,7 @@ def main():
         os.makedirs(output_root)
 
     config = 'config.py'
-    checkpoint = '/opt/ml/model/best_val_mcScore_iter_68000_ce_loss_fold1.pth'
+    checkpoint = '/opt/ml/model/checkpoint.pth'
     model = init_model(config, checkpoint, device='cuda:0')
 
     with torch.no_grad():
