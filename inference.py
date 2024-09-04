@@ -21,7 +21,7 @@ def write(path, array):
 
 
 def main():
-    input_root = '/input/images/adenocarcinoma_image'
+    input_root = '/input/images/adenocarcinoma-image'
     output_root = '/output/images/adenocarcinoma-mask'
 
     if not os.path.exists(output_root):
