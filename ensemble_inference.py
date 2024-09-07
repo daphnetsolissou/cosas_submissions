@@ -15,6 +15,7 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 import torch.nn.functional as F
 from mmengine.runner import Runner
+import dinov2_adapter
 
 
 val_transforms = A.Compose([A.Resize(height=224, width=224),
@@ -197,6 +198,8 @@ def main():
                     input_path = input_root + '/' + filename
                     image = read(input_path)
                     result = predict_ensemble(loaded_models_dict, image, threshold=0.57, device='cuda:0')
+                    # print(result.shape)
                     write(output_path, result)
                 except Exception as error:
                     print(error)
+    # print('Done')
