@@ -38,13 +38,16 @@ def write(path, array):
 
 def load_model_checkpoint(checkpoint_path, pretrained_encoder_name, work_dir, device='cpu'):
     model = Dinov2LRP(model_name=pretrained_encoder_name, load_pretrained_weights=False, freeze_encoder=True,
-                      embed_dim=768, patch_size=14, resH=16, resW=16, num_labels=1)
+                      embed_dim=768, resH=16, resW=16, num_labels=1)
 
-    runner = Runner(model=model, work_dir=work_dir)
-    runner.load_checkpoint(checkpoint_path, map_location=device)
-
-    model.eval()
+    checkpoint = torch.load(checkpoint_path)
+    if 'state_dict' in checkpoint:
+        state_dict = checkpoint['state_dict']
+    else:
+        state_dict = checkpoint
+    model.load_state_dict(state_dict)
     model.to(device)
+    model.eval()
     return model
 
 
