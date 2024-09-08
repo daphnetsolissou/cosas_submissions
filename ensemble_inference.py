@@ -1,6 +1,9 @@
 import os
 import os.path as osp
 
+import warnings
+warnings.filterwarnings("ignore")
+
 import SimpleITK
 
 from mmseg.apis import inference_model, init_model
@@ -203,3 +206,6 @@ def main():
                 except Exception as error:
                     print(error)
     # print('Done')
+
+if __name__ == '__main__':
+    main()
